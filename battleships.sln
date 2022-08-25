@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships", "src\Battlesh
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DA8A099A-622C-4CC0-9F06-F53629C7C356}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships.Domain", "test\Battleships.Domain\Battleships.Domain.csproj", "{EFC548ED-1AD3-410D-814C-D94C5FF0104C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships.Domain.Tests", "test\Battleships.Domain.Tests\Battleships.Domain.Tests.csproj", "{EFC548ED-1AD3-410D-814C-D94C5FF0104C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
