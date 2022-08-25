@@ -1,16 +1,19 @@
 using Battleships.Board;
+using Battleships.Domain;
 
 namespace Battleships.ConsoleBoard;
 
 public class ConsoleDrawer : IBoardDrawer
 {
-    private readonly int _x;
-    private readonly int _y;
+    private const char HIT_MARK = 'X';
+    private const char MISS_MARK = 'O';
+    private readonly int _boardX;
+    private readonly int _boardY;
 
     public ConsoleDrawer(int x, int y)
     {
-        _x = x;
-        _y = y;
+        _boardX = x;
+        _boardY = y;
     }
 
     public void DrawBoard()
@@ -18,7 +21,7 @@ public class ConsoleDrawer : IBoardDrawer
         Console.Clear();
         Console.SetCursorPosition(3, 1);
         Console.WriteLine("Battleships");
-        Console.SetCursorPosition(_y + 1, _x);
+        Console.SetCursorPosition(_boardY + 1, _boardX);
         var columnIds = "ABCDEFGHIJ";
 
         foreach (var c in columnIds)
@@ -28,10 +31,21 @@ public class ConsoleDrawer : IBoardDrawer
 
         for (int i = 1; i < 11; ++i)
         {
-            Console.SetCursorPosition(i < 10 ? _y : _y - 1, _x + i);
+            Console.SetCursorPosition(i < 10 ? _boardY : _boardY - 1, _boardX + i);
             Console.Write(i);
         }
     }
 
-    
+    public void DrawHit(Coordinate coordinate)
+    {
+        Console.SetCursorPosition(coordinate.X * 2 + _boardX, coordinate.Y + _boardY);
+        Console.Write(HIT_MARK);
+    }
+
+    public void DrawMiss(Coordinate coordinate)
+    {
+        Console.SetCursorPosition(coordinate.X * 2 + _boardX, coordinate.Y + _boardY);
+        Console.Write(MISS_MARK);
+    }
+
 }
