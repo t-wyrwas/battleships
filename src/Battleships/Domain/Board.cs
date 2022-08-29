@@ -3,14 +3,16 @@ using Battleships.Domain.Ships;
 
 public class Board
 {
-    public Board(List<Ship> ships)
+    public Board(List<Ship> fleet)
     {
-        _ships = ships;
+        Fleet = fleet;
     }
+
+    public List<Ship> Fleet {get;}
 
     public (MoveResult result, Ship? ship) Fire(Coordinate at)
     {
-        foreach (var ship in _ships)
+        foreach (var ship in Fleet)
         {
             var result = ship.TryHit(at);
             if(result == MoveResult.Hit)
@@ -21,7 +23,6 @@ public class Board
         return (MoveResult.Miss, null);
     }
 
-    public bool DoesFleetStillExist() => _ships.Any(s => s.GetState() != ShipState.Sunk);
+    public bool DoesFleetStillExist() => Fleet.Any(s => s.GetState() != ShipState.Sunk);
 
-    private List<Ship> _ships;
 }
