@@ -61,4 +61,48 @@ public class BoardTest
         sunkShip.Should().Be(ship);
         sunkShip!.GetState().Should().Be(ShipState.Damaged);
     }
+
+    [Fact]
+    public void DoesFleetStillExists_RunOnExistingFleet_ReturnsTrue()
+    {
+        var firstShip = new Ship { Direction = Direction.N, Position = Coordinate.From("C8"), Type = ShipType.Destroyer };
+        var secondShip = new Ship { Direction = Direction.S, Position = Coordinate.From("E2"), Type = ShipType.Destroyer };
+        var sut = new Board(new List<Ship> { firstShip, secondShip });
+
+        _ = sut.Fire(Coordinate.From("C8"));
+        _ = sut.Fire(Coordinate.From("C7"));
+        _ = sut.Fire(Coordinate.From("C6"));
+        var (lastHitResult, _) = sut.Fire(Coordinate.From("C5"));
+
+        lastHitResult.Should().Be(MoveResult.Hit);
+        firstShip.GetState().Should().Be(ShipState.Sunk);
+        sut.DoesFleetStillExist().Should().BeTrue();
+    }
+
+    [Fact]
+    public void DoesFleetStillExists_RunOnSunkFleet_ReturnsFalse()
+    {
+        var firstShip = new Ship { Direction = Direction.N, Position = Coordinate.From("C8"), Type = ShipType.Destroyer };
+        var secondShip = new Ship { Direction = Direction.S, Position = Coordinate.From("E2"), Type = ShipType.Battleship };
+        var sut = new Board(new List<Ship> { firstShip, secondShip });
+
+        _ = sut.Fire(Coordinate.From("C8"));
+        _ = sut.Fire(Coordinate.From("C7"));
+        _ = sut.Fire(Coordinate.From("C6"));
+        var (lastHitResult, _) = sut.Fire(Coordinate.From("C5"));
+
+        lastHitResult.Should().Be(MoveResult.Hit);
+        firstShip.GetState().Should().Be(ShipState.Sunk);
+
+        _ = sut.Fire(Coordinate.From("E2"));
+        _ = sut.Fire(Coordinate.From("E3"));
+        _ = sut.Fire(Coordinate.From("E4"));
+        _ = sut.Fire(Coordinate.From("E5"));
+        (lastHitResult, _) = sut.Fire(Coordinate.From("E6"));
+
+        lastHitResult.Should().Be(MoveResult.Hit);
+        secondShip.GetState().Should().Be(ShipState.Sunk);
+
+        sut.DoesFleetStillExist().Should().BeFalse();
+    }
 }
