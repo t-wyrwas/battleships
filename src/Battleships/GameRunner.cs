@@ -43,6 +43,11 @@ public class GameRunner
                     _boardDrawer.DrawMiss(coordinate);
                 }
             }
+
+            if(!_board.DoesFleetStillExist())
+            {
+                _boardDrawer.WriteMessage("You won!");
+            }
         }
     }
 

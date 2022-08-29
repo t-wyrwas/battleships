@@ -10,4 +10,5 @@ public interface IBoardDrawer
     void DrawMiss(Coordinate coordinate);
     void DrawShip(Ship ship);
     (UserCommand command, Coordinate? coordinate) FetchUserInput();
+    void WriteMessage(string msg);
 }

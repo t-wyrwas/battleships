@@ -80,6 +80,12 @@ public class ConsoleDrawer : IBoardDrawer
         }
     }
 
+    public void WriteMessage(string msg)
+    {
+        Console.SetCursorPosition(_commandPaneX, _commandPaneY-3);
+        Console.WriteLine(msg);
+    }
+
     public (UserCommand command, Coordinate? coordinate) FetchUserInput()
     {
         Console.SetCursorPosition(_commandPaneX, _commandPaneY);
