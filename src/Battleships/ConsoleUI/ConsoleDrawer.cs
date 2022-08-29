@@ -8,7 +8,6 @@ public class ConsoleDrawer : IBoardDrawer
 {
     private const char HIT_MARK = 'X';
     private const char MISS_MARK = 'O';
-    // private const char SHIP_MARK = '\u2B1C';
     private const char SHIP_MARK = 'V';
     private readonly int _boardX;
     private readonly int _boardY;
@@ -44,15 +43,23 @@ public class ConsoleDrawer : IBoardDrawer
         }
     }
 
+    ~ConsoleDrawer()
+    {
+        Console.Clear();
+    }
+
     public void DrawHit(Coordinate coordinate)
     {
-        Console.SetCursorPosition(coordinate.X * 2 + _boardX, coordinate.Y + _boardY);
+        // Console.SetCursorPosition(coordinate.X * 2 + _boardX, coordinate.Y + _boardY);
+        var (x, y) = GetConsoleCoordinates(coordinate);
+        Console.SetCursorPosition(x, y);
         Console.Write(HIT_MARK);
     }
 
     public void DrawMiss(Coordinate coordinate)
     {
-        Console.SetCursorPosition(coordinate.X * 2 + _boardX, coordinate.Y + _boardY);
+        var (x, y) = GetConsoleCoordinates(coordinate);
+        Console.SetCursorPosition(x, y);
         Console.Write(MISS_MARK);
     }
 
@@ -73,7 +80,7 @@ public class ConsoleDrawer : IBoardDrawer
         }
     }
 
-    public (UserCommand command, Coordinate? input) FetchUserInput()
+    public (UserCommand command, Coordinate? coordinate) FetchUserInput()
     {
         Console.SetCursorPosition(_commandPaneX, _commandPaneY);
         Console.WriteLine("Provide coordinates to fire at! (e.g.: A5, J8)");

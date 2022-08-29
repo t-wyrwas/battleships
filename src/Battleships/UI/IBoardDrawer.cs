@@ -9,5 +9,5 @@ public interface IBoardDrawer
     void DrawHit(Coordinate coordinate);
     void DrawMiss(Coordinate coordinate);
     void DrawShip(Ship ship);
-    (UserCommand command, Coordinate? input) FetchUserInput();
+    (UserCommand command, Coordinate? coordinate) FetchUserInput();
 }

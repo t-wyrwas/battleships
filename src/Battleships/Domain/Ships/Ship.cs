@@ -25,10 +25,10 @@ public class Ship
     {
         var isHit = Direction switch
         {
-            Direction.N => at.X == Position.X && (at.Y <= Position.Y || at.Y >= Position.Y + ShipLength()),
-            Direction.E => at.Y == Position.Y && (at.X >= Position.X || at.X <= Position.X + ShipLength()),
-            Direction.S => at.X == Position.X && (at.Y >= Position.Y || at.Y <= Position.Y + ShipLength()),
-            Direction.W => at.Y == Position.Y && (at.X <= Position.X || at.X >= Position.X + ShipLength()),
+            Direction.N => at.X == Position.X && (at.Y <= Position.Y && at.Y > Position.Y - ShipLength()),
+            Direction.E => at.Y == Position.Y && (at.X >= Position.X && at.X <= Position.X + ShipLength()),
+            Direction.S => at.X == Position.X && (at.Y >= Position.Y && at.Y <= Position.Y + ShipLength()),
+            Direction.W => at.Y == Position.Y && (at.X <= Position.X && at.X > Position.X - ShipLength()),
             _ => false,
         };
 

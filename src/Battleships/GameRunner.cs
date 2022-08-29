@@ -14,14 +14,36 @@ public class GameRunner
     public void RunGame()
     {
         _boardDrawer.DrawBoard();
-        foreach(var ship in _board.Fleet)
+        foreach (var ship in _board.Fleet)
         {
             _boardDrawer.DrawShip(ship);
         }
-        _boardDrawer.FetchUserInput();
-        // while(true)
-        // {
-        // }
+
+        while (true)
+        {
+            var input = _boardDrawer.FetchUserInput();
+            if(input.command == UserCommand.QuitGame)
+            {
+                return;
+            }
+            if(input.command == UserCommand.RestartGame)
+            {
+                throw new NotImplementedException();
+            }
+            if(input.command == UserCommand.NextMove)
+            {
+                var coordinate = input.coordinate!.Value;
+                var (result, ship) = _board.Fire(coordinate);
+                if(result == MoveResult.Hit)
+                {
+                    _boardDrawer.DrawHit(coordinate);
+                }
+                if(result == MoveResult.Miss)
+                {
+                    _boardDrawer.DrawMiss(coordinate);
+                }
+            }
+        }
     }
 
     private IBoardDrawer _boardDrawer;
