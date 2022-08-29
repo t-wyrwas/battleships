@@ -1,7 +1,7 @@
 using Battleships.UI;
 using Battleships.Domain;
 
-namespace Battleships.ConsoleBoard;
+namespace Battleships.ConsoleUI;
 
 public class ConsoleDrawer : IBoardDrawer
 {
