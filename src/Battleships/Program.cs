@@ -1,4 +1,4 @@
-﻿using Battleships.ConsoleBoard;
+﻿using Battleships.ConsoleUI;
 using Battleships.Domain;
 
 
