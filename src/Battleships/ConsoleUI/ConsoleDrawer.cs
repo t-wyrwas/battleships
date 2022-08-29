@@ -9,6 +9,7 @@ public class ConsoleDrawer : IBoardDrawer
     private const char HIT_MARK = 'X';
     private const char MISS_MARK = 'O';
     private const char SHIP_MARK = 'V';
+    private const char SUNK_SHIP_MARK = 'S';
     private readonly int _boardX;
     private readonly int _boardY;
     private readonly int _commandPaneX;
@@ -63,13 +64,13 @@ public class ConsoleDrawer : IBoardDrawer
         Console.Write(MISS_MARK);
     }
 
-    public void DrawShip(Ship ship)
+    public void DrawShip(Ship ship, bool asSunk = false)
     {
         var (x, y) = GetConsoleCoordinates(ship.Position);
         for (int i = 0; i < (int)ship.Type; ++i)
         {
             Console.SetCursorPosition(x, y);
-            Console.Write(SHIP_MARK);
+            Console.Write(asSunk ? SUNK_SHIP_MARK : SHIP_MARK);
             (x, y) = ship.Direction switch
             {
                 Direction.N => (x, y - 1),
@@ -82,27 +83,45 @@ public class ConsoleDrawer : IBoardDrawer
 
     public void WriteMessage(string msg)
     {
-        Console.SetCursorPosition(_commandPaneX, _commandPaneY-3);
-        Console.WriteLine(msg);
+        Console.SetCursorPosition(_commandPaneX, _commandPaneY - 3);
+        Console.Write("                                           "); // TODO this is lame
+        Console.SetCursorPosition(_commandPaneX, _commandPaneY - 3);
+        Console.Write(msg);
     }
 
     public (UserCommand command, Coordinate? coordinate) FetchUserInput()
     {
-        Console.SetCursorPosition(_commandPaneX, _commandPaneY);
-        Console.WriteLine("Provide coordinates to fire at! (e.g.: A5, J8)");
-        Console.WriteLine("\\q - quit");
-        Console.WriteLine("\\r - restart");
-        Console.Write("> ");
-        var input = Console.ReadLine();
-        switch (input)
+        string? input = "";
+        while (true)
         {
-            case "\\q":
-                return (UserCommand.QuitGame, null);
-            case "\\r":
-                return (UserCommand.RestartGame, null);
-            default:
-                return (UserCommand.NextMove, Coordinate.From(input!));  // TODO handle exception
-        };
+            Console.SetCursorPosition(_commandPaneX, _commandPaneY);
+            Console.WriteLine("Provide coordinates to fire at! (e.g.: A5, J8)");
+            Console.WriteLine("\\q - quit");
+            Console.WriteLine("\\r - restart");
+            Console.Write("> ");
+            var position = Console.GetCursorPosition();
+            input = Console.ReadLine();
+            Console.SetCursorPosition(position.Left, position.Top);
+            Console.Write("                                ");  // TODO this is lame
+            Console.SetCursorPosition(position.Left, position.Top);
+            switch (input)
+            {
+                case "\\q":
+                    return (UserCommand.QuitGame, null);
+                case "\\r":
+                    return (UserCommand.RestartGame, null);
+                default:
+                    try
+                    {
+                        return (UserCommand.NextMove, Coordinate.From(input!));
+                    }
+                    catch (ArgumentException)
+                    {
+                        WriteMessage("Invalid input! - try again");
+                    }
+                    break;
+            };
+        }
     }
 
     private (int x, int y) GetConsoleCoordinates(Coordinate coordinate) => (_boardX + coordinate.X * 2, _boardY + coordinate.Y);

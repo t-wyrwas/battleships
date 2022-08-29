@@ -24,6 +24,7 @@ public record struct Coordinate
         {
             throw new ArgumentException($"Invalid cooridnate string: {value}");
         }
+        value = value.ToUpper();
         var xCoordinateStr = value.Substring(0, 1);
         var xCoordinateValid = "ABCDEFGHIJ".Contains(xCoordinateStr); // TODO
         var xCoordinate = ((int)xCoordinateStr.ToCharArray()[0] + 1 - ASCII_CODE_A);

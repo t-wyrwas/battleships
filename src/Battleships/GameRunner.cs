@@ -1,4 +1,5 @@
 using Battleships.Domain;
+using Battleships.Domain.Ships;
 using Battleships.UI;
 
 namespace Battleships;
@@ -37,6 +38,11 @@ public class GameRunner
                 if(result == MoveResult.Hit)
                 {
                     _boardDrawer.DrawHit(coordinate);
+                    if(ship!.GetState() == ShipState.Sunk)
+                    {
+                        _boardDrawer.DrawShip(ship, asSunk: true);
+                        _boardDrawer.WriteMessage("Ship sank!");
+                    }
                 }
                 if(result == MoveResult.Miss)
                 {
