@@ -13,5 +13,6 @@ drawer.DrawHit(Coordinate.From("A5"));
 
 drawer.DrawMiss(Coordinate.From("D10"));
 drawer.DrawMiss(Coordinate.From("B3"));
+drawer.DrawShip(new List<Coordinate> { Coordinate.From("H3"), Coordinate.From("H4"), Coordinate.From("H5"), Coordinate.From("H6") });
 
 Console.ReadLine();

@@ -1,4 +1,4 @@
-using Battleships.Board;
+using Battleships.UI;
 using Battleships.Domain;
 
 namespace Battleships.ConsoleBoard;
@@ -7,6 +7,7 @@ public class ConsoleDrawer : IBoardDrawer
 {
     private const char HIT_MARK = 'X';
     private const char MISS_MARK = 'O';
+    private const char SHIP_MARK = '\u2B1C';
     private readonly int _boardX;
     private readonly int _boardY;
 
@@ -48,4 +49,12 @@ public class ConsoleDrawer : IBoardDrawer
         Console.Write(MISS_MARK);
     }
 
+    public void DrawShip(IEnumerable<Coordinate> shape)
+    {
+        foreach (var coordinate in shape)
+        {
+            Console.SetCursorPosition(coordinate.X * 2 + _boardX, coordinate.Y + _boardY);
+            Console.Write(SHIP_MARK);
+        }
+    }
 }

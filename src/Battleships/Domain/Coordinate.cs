@@ -1,6 +1,6 @@
 namespace Battleships.Domain;
 
-public record Coordinate
+public record struct Coordinate
 {
     public const int ASCII_CODE_A = 65;
     public int X { get; }
