@@ -63,7 +63,7 @@ public class GameRunner
         }
     }
 
-    private Board GetEmptyBoard() => new Board(_fleetGenerator.GenerateFleet());
+    private Board GetEmptyBoard() => new Board(_fleetGenerator.GenerateFleet(new [] {ShipType.Battleship, ShipType.Destroyer, ShipType.Destroyer}));
     private void DrawBoard(Board board)
     {
         _boardDrawer.DrawBoard();

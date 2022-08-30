@@ -85,6 +85,7 @@ public class ConsoleDrawer : IBoardDrawer
                 Direction.E => (x + 2, y),
                 Direction.S => (x, y + 1),
                 Direction.W => (x - 2, y),
+                _ => throw new ArgumentException($"Wrong ship type: {ship.Direction}"),
             };
         }
     }

@@ -4,11 +4,13 @@ public record struct Coordinate
 {
     public int X { get; }
     public int Y { get; }
+    public const int MAX = 10;
+    public const int MIN = 1;
 
     public Coordinate(int x, int y)
     {
-        var invalidX = x < 1 || x > 10;
-        var invalidY = y < 1 || y > 10;
+        var invalidX = x < MIN || x > MAX;
+        var invalidY = y < MIN || y > MAX;
         if (invalidX || invalidY)
         {
             throw new ArgumentException($"Invalid coordinates: {x}:{y}");
