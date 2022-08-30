@@ -6,58 +6,68 @@ namespace Battleships;
 
 public class GameRunner
 {
-    public GameRunner(IBoardDrawer boardDrawer, Board board)
+    public GameRunner(IBoardDrawer boardDrawer, IFleetGenerator fleetGenerator)
     {
         _boardDrawer = boardDrawer;
-        _board = board;
+        _fleetGenerator = fleetGenerator;
     }
 
     public void RunGame()
     {
-        _boardDrawer.DrawBoard();
-        foreach (var ship in _board.Fleet)
-        {
-            _boardDrawer.DrawShip(ship);
-        }
+        var board = GetEmptyBoard();
+        DrawBoard(board);
+        var gameFinished = false;
 
         while (true)
         {
-            var gameFinished = !_board.DoesFleetStillExist();
-            if(gameFinished)
-            {
-                _boardDrawer.WriteMessage("You won!");
-            }
-
             var input = _boardDrawer.FetchUserInput();
-            if(input.command == UserCommand.QuitGame)
+            if (input.command == UserCommand.QuitGame)
             {
                 return;
             }
-            if(input.command == UserCommand.RestartGame)
+            if (input.command == UserCommand.RestartGame)
             {
-                throw new NotImplementedException();
+                board = GetEmptyBoard();
+                DrawBoard(board);
+                gameFinished = false;
             }
-            if(input.command == UserCommand.NextMove && !gameFinished)
+            if (input.command == UserCommand.NextMove && !gameFinished)
             {
                 var coordinate = input.coordinate!.Value;
-                var (result, ship) = _board.Fire(coordinate);
-                if(result == MoveResult.Hit)
+                var (result, ship) = board.Fire(coordinate);
+                if (result == MoveResult.Hit)
                 {
                     _boardDrawer.DrawHit(coordinate);
-                    if(ship!.GetState() == ShipState.Sunk)
+                    if (ship!.GetState() == ShipState.Sunk)
                     {
                         _boardDrawer.DrawShip(ship, asSunk: true);
                         _boardDrawer.WriteMessage("Ship sank!");
                     }
                 }
-                if(result == MoveResult.Miss)
+                if (result == MoveResult.Miss)
                 {
                     _boardDrawer.DrawMiss(coordinate);
                 }
             }
+
+            gameFinished = !board.DoesFleetStillExist();
+            if (gameFinished)
+            {
+                _boardDrawer.WriteMessage("You won!");
+            }
+        }
+    }
+
+    private Board GetEmptyBoard() => new Board(_fleetGenerator.GenerateFleet());
+    private void DrawBoard(Board board)
+    {
+        _boardDrawer.DrawBoard();
+        foreach (var ship in board.Fleet)
+        {
+            _boardDrawer.DrawShip(ship);
         }
     }
 
     private IBoardDrawer _boardDrawer;
-    private Board _board;
+    private IFleetGenerator _fleetGenerator;
 }
