@@ -22,6 +22,12 @@ public class GameRunner
 
         while (true)
         {
+            var gameFinished = !_board.DoesFleetStillExist();
+            if(gameFinished)
+            {
+                _boardDrawer.WriteMessage("You won!");
+            }
+
             var input = _boardDrawer.FetchUserInput();
             if(input.command == UserCommand.QuitGame)
             {
@@ -31,7 +37,7 @@ public class GameRunner
             {
                 throw new NotImplementedException();
             }
-            if(input.command == UserCommand.NextMove)
+            if(input.command == UserCommand.NextMove && !gameFinished)
             {
                 var coordinate = input.coordinate!.Value;
                 var (result, ship) = _board.Fire(coordinate);
@@ -48,11 +54,6 @@ public class GameRunner
                 {
                     _boardDrawer.DrawMiss(coordinate);
                 }
-            }
-
-            if(!_board.DoesFleetStillExist())
-            {
-                _boardDrawer.WriteMessage("You won!");
             }
         }
     }

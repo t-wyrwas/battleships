@@ -21,14 +21,14 @@ public class ConsoleDrawer : IBoardDrawer
         _boardX = x;
         _boardY = y;
         _commandPaneX = x;
-        _commandPaneY = y + 30;
+        _commandPaneY = y + 20;
     }
 
     public void DrawBoard()
     {
         Console.Clear();
         Console.SetCursorPosition(3, 1);
-        Console.WriteLine("Battleships");
+        Console.WriteLine(">>> Battleships <<<");
 
         Console.SetCursorPosition(_boardX + 2, _boardY);
         var columnIds = "ABCDEFGHIJ";
@@ -42,6 +42,15 @@ public class ConsoleDrawer : IBoardDrawer
             Console.SetCursorPosition(_boardX, _boardY + i);
             Console.Write(i);
         }
+
+        Console.SetCursorPosition(_commandPaneX, _boardY + 12);
+        Console.WriteLine($"{SHIP_MARK} - ship");
+        Console.SetCursorPosition(_commandPaneX, _boardY + 13);
+        Console.WriteLine($"{SUNK_SHIP_MARK} - sunk ship");
+        Console.SetCursorPosition(_commandPaneX, _boardY + 14);
+        Console.WriteLine($"{MISS_MARK} - miss");
+        Console.SetCursorPosition(_commandPaneX, _boardY + 15);
+        Console.WriteLine($"{HIT_MARK} - hit");
     }
 
     ~ConsoleDrawer()
@@ -51,7 +60,6 @@ public class ConsoleDrawer : IBoardDrawer
 
     public void DrawHit(Coordinate coordinate)
     {
-        // Console.SetCursorPosition(coordinate.X * 2 + _boardX, coordinate.Y + _boardY);
         var (x, y) = GetConsoleCoordinates(coordinate);
         Console.SetCursorPosition(x, y);
         Console.Write(HIT_MARK);
@@ -95,8 +103,12 @@ public class ConsoleDrawer : IBoardDrawer
         while (true)
         {
             Console.SetCursorPosition(_commandPaneX, _commandPaneY);
-            Console.WriteLine("Provide coordinates to fire at! (e.g.: A5, J8)");
+            Console.Write("Provide coordinates and fire at will!");
+            Console.SetCursorPosition(_commandPaneX, _commandPaneY+1);
+            Console.WriteLine("XY - coordinates, e.g.: A5, J8");
+            Console.SetCursorPosition(_commandPaneX, _commandPaneY+2);
             Console.WriteLine("\\q - quit");
+            Console.SetCursorPosition(_commandPaneX, _commandPaneY+3);
             Console.WriteLine("\\r - restart");
             Console.Write("> ");
             var position = Console.GetCursorPosition();
