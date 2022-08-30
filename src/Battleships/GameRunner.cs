@@ -1,3 +1,4 @@
+using System;
 using Battleships.Domain;
 using Battleships.Domain.Ships;
 using Battleships.UI;
@@ -63,14 +64,28 @@ public class GameRunner
         }
     }
 
-    private Board GetEmptyBoard() => new Board(_fleetGenerator.GenerateFleet(new [] {ShipType.Battleship, ShipType.Destroyer, ShipType.Destroyer}));
+    private Board GetEmptyBoard() => new Board(_fleetGenerator.GenerateFleet(new[] { ShipType.Battleship, ShipType.Destroyer, ShipType.Destroyer }));
     private void DrawBoard(Board board)
     {
         _boardDrawer.DrawBoard();
-        foreach (var ship in board.Fleet)
+        if (IsCheatMode())
         {
-            _boardDrawer.DrawShip(ship);
+            foreach (var ship in board.Fleet)
+            {
+                _boardDrawer.DrawShip(ship);
+            }
         }
+    }
+
+    private bool IsCheatMode()
+    {
+        var cheatMode = Environment.GetEnvironmentVariable("CHEAT_MODE");
+        var isCheatMode = false;
+        if (cheatMode is not null)
+        {
+            bool.TryParse(cheatMode, out isCheatMode);
+        }
+        return isCheatMode;
     }
 
     private IBoardDrawer _boardDrawer;
