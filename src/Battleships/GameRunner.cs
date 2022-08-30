@@ -38,7 +38,6 @@ public class GameRunner
                 var (result, ship) = board.Fire(coordinate);
                 if (result == MoveResult.Hit)
                 {
-                    _boardDrawer.DrawHit(coordinate);
                     if (ship!.GetState() == ShipState.Sunk)
                     {
                         _boardDrawer.DrawShip(ship, asSunk: true);
@@ -46,6 +45,7 @@ public class GameRunner
                     }
                     else
                     {
+                        _boardDrawer.DrawHit(coordinate);
                         _boardDrawer.WriteMessage("Hit!");
                     }
                 }
