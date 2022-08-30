@@ -43,10 +43,15 @@ public class GameRunner
                         _boardDrawer.DrawShip(ship, asSunk: true);
                         _boardDrawer.WriteMessage("Ship sank!");
                     }
+                    else
+                    {
+                        _boardDrawer.WriteMessage("Hit!");
+                    }
                 }
                 if (result == MoveResult.Miss)
                 {
                     _boardDrawer.DrawMiss(coordinate);
+                    _boardDrawer.WriteMessage("Missed!");
                 }
             }
 
